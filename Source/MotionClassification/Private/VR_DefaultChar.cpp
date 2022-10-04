@@ -29,11 +29,11 @@ AVR_DefaultChar::AVR_DefaultChar()
 
 	HandMeshL = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HandMeshL"));
 	HandMeshL->SetupAttachment(MotionControllerL);
-	const ConstructorHelpers::FObjectFinder<UStaticMesh>HandMeshL_Obj(TEXT(""));
+	/*const ConstructorHelpers::FObjectFinder<UStaticMesh>HandMeshL_Obj(TEXT(""));
 	if(HandMeshL_Obj.Succeeded())
 	{
 		HandMeshL->SetStaticMesh(HandMeshL_Obj.Object);
-	}
+	}*/
 	
 	//----------------------------------------------
 	// Hand Right
@@ -43,15 +43,14 @@ AVR_DefaultChar::AVR_DefaultChar()
 
 	HandMeshR = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HandMeshR"));
 	HandMeshR->SetupAttachment(CameraRoot);
-	const ConstructorHelpers::FObjectFinder<UStaticMesh>HandMeshR_Obj(TEXT(""));
+	/*const ConstructorHelpers::FObjectFinder<UStaticMesh>HandMeshR_Obj(TEXT(""));
 	if(HandMeshR_Obj.Succeeded())
 	{
 		HandMeshR->SetStaticMesh(HandMeshR_Obj.Object);
-	}
+	}*/
 
 	//----------------------------------------------
 	// Default variable inits
-	
 	
 }
 
@@ -60,7 +59,7 @@ void AVR_DefaultChar::BeginPlay()
 {
 	Super::BeginPlay();
 
-	InputComponent->BindAction("Debug",EInputEvent::IE_Pressed,this,&AVR_DefaultChar::Test);
+	//InputComponent->BindAction("Debug",EInputEvent::IE_Pressed,this,&AVR_DefaultChar::Test);
 }
 
 void AVR_DefaultChar::Test()
