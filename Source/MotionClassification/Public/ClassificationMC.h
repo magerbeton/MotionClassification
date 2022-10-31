@@ -77,7 +77,6 @@ public:
 	TArray<int> FindDTWNeighbors(int x, int y);
 	int FindMinNeighbor(TArray<int> InValues);
 	
-
 	UFUNCTION(BlueprintCallable)
 	void TestTestFunc();
 	
@@ -86,6 +85,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void CompareTwoGestures();
+	
 	
 protected:
 

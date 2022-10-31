@@ -6,7 +6,7 @@
 #include "GameFramework/Character.h"
 #include "VR_DefaultChar.generated.h"
 
-class UCameraComponent; class UClassificationMC;
+class UCameraComponent; class UClassificationMC; class UFastClassificationMC;
 
 UCLASS()
 class MOTIONCLASSIFICATION_API AVR_DefaultChar : public ACharacter
@@ -37,9 +37,14 @@ public:
 	//----------------------------------------------
 	// Hand Right
 
+	/*
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Hand")
 	UClassificationMC* MotionControllerR;
+	*/
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Hand")
+	UFastClassificationMC* MotionControllerR;
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Hand")
 	UStaticMeshComponent* HandMeshR;
 

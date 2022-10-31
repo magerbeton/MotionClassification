@@ -4,6 +4,7 @@
 #include "VR_DefaultChar.h"
 
 #include "ClassificationMC.h"
+#include "FastClassificationMC.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "XRMotionControllerBase.h"
 #include "Components/CapsuleComponent.h"
@@ -37,7 +38,8 @@ AVR_DefaultChar::AVR_DefaultChar()
 	
 	//----------------------------------------------
 	// Hand Right
-	MotionControllerR = CreateDefaultSubobject<UClassificationMC>(TEXT("MotionControllerR"));
+	MotionControllerR = CreateDefaultSubobject<UFastClassificationMC>(TEXT("MotionControllerR"));
+	//MotionControllerR = CreateDefaultSubobject<UClassificationMC>(TEXT("MotionControllerR"));
 	MotionControllerR->SetupAttachment(CameraRoot);
 	MotionControllerR->MotionSource = FXRMotionControllerBase::RightHandSourceId;
 
@@ -64,7 +66,28 @@ void AVR_DefaultChar::BeginPlay()
 
 void AVR_DefaultChar::Test()
 {
-	MotionControllerL->TestInterpolation(FVector(1.0f,0.0f,0.0f),FVector(1.0f,0.0f,0.0f),0.5f,2.5f);
+	//MotionControllerL->TestInterpolation(FVector(1.0f,0.0f,0.0f),FVector(1.0f,0.0f,0.0f),0.5f,2.5f);
+	
+	TArray<FVector> s;
+	TArray<FVector> t;
+
+	for (int i = 0; i < 32; ++i)
+	{
+		s[i] = FVector(i,i,i);
+		t[i] = FVector(i/2,i/2,i/2);
+	}
+	
+	uint32** Arr = MotionControllerR->DtwDistance(s,t);
+	for (int i = 0; i < 32; ++i)
+	{
+		FString Result = "";
+		for (int j = 0; j < 32; ++j)
+		{
+			Result.Append(FString::Printf(TEXT("%i,"),*static_cast<int>(Arr[i])));
+			//UE_LOG(LogTemp,Display,TEXT(""));
+		}
+		UE_LOG(LogTemp,Display,TEXT("Text: %s"),*Result);
+	}
 }
 
 
@@ -80,6 +103,5 @@ void AVR_DefaultChar::Tick(float DeltaTime)
 void AVR_DefaultChar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
