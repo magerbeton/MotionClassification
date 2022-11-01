@@ -85,6 +85,11 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void CompareTwoGestures();
+
+	uint16** GenerateDtw(TArray<FVector> Input1, TArray<FVector> Input2);
+
+	UFUNCTION()
+	void TestUint16Implementation();
 	
 	
 protected:

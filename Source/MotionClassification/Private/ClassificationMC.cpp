@@ -7,6 +7,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "HAL/PlatformFilemanager.h"
 #include "Misc/FileHelper.h"
+#include <limits>
 
 
 UClassificationMC::UClassificationMC()
@@ -250,6 +251,66 @@ void UClassificationMC::CompareTwoGestures()
 	const float Result = CompareGestures(Sample,Source);
 	UE_LOG(LogTemp,Display,TEXT("Result = %f"),Result);
 
+}
+
+uint16** UClassificationMC::GenerateDtw(TArray<FVector> Input1, TArray<FVector> Input2)
+{
+	if(Input1.Num() != Input2.Num())
+	{
+		return {};
+	}
+
+	//setup the width and height of the matrix for dtw
+	const int width = Input1.Num();
+	const int height = Input1.Num();
+	
+	
+	//init 2d array for the matrix
+	uint16** array2d = new uint16*[width];
+
+	for(int i = 0; i<width; i++)
+	{
+		array2d[i] = new uint16[height];
+	}
+
+	// fill the array with max values
+	for(int i = 0; i<width; i++)
+	{
+		for(int n = 0; i<height; n++)
+		{
+			array2d[i][n] = std::numeric_limits<uint16>::max();
+		}
+	}
+
+	array2d[0][0] = 0;
+
+	for(int i = 1; i<width; i++)
+	{
+		for(int n = 1; n<height; n++)
+		{
+			const float cost= FVector::Distance(Input1[i],Input2[n]);
+			array2d[i][n] = cost + FMath::Min3(array2d[i-1][n],array2d[i][n-1],array2d[i-1][n-1]);
+		}
+	}
+	
+	return array2d;
+}
+
+void UClassificationMC::TestUint16Implementation()
+{
+	const TArray<FVector> Arr1 = GenerateTest(FVector(1,1,1),FVector(2,3,4));
+	const TArray<FVector> Arr2 = GenerateTest(FVector(1,1,3),FVector(2,3,4));
+
+	uint16** DtwMatrix = GenerateDtw(Arr1,Arr2);
+	for(int i = 0; i<Arr1.Num(); i++)
+	{
+		FString Line = "";
+		for(int n = 0; n<Arr2.Num(); n++)
+		{
+			Line.Append(FString::Printf(TEXT("%i,"),DtwMatrix[i][n]));
+		}
+		UE_LOG(LogTemp,Display,TEXT("%s"),*Line);
+	}
 }
 
 void UClassificationMC::TickComponent(float DeltaTime, ELevelTick TickType,

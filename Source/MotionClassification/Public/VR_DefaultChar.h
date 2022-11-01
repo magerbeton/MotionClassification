@@ -51,9 +51,13 @@ public:
 	//----------------------------------------------
 	// Hand Left
 
+	/*
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Hand")
 	UClassificationMC* MotionControllerL;
-
+	*/
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Hand")
+	UFastClassificationMC* MotionControllerL;
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Hand")
 	UStaticMeshComponent* HandMeshL;
 

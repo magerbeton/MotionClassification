@@ -24,13 +24,16 @@ AVR_DefaultChar::AVR_DefaultChar()
 
 	//----------------------------------------------
 	// Hand Left
-	MotionControllerL = CreateDefaultSubobject<UClassificationMC>(TEXT("MotionControllerL"));
+
+	MotionControllerL = CreateDefaultSubobject<UFastClassificationMC>(TEXT("MotionControllerL"));
+	//MotionControllerL = CreateDefaultSubobject<UClassificationMC>(TEXT("MotionControllerL"));
 	MotionControllerL->SetupAttachment(CameraRoot);
 	MotionControllerL->MotionSource = FXRMotionControllerBase::LeftHandSourceId;
 
 	HandMeshL = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HandMeshL"));
 	HandMeshL->SetupAttachment(MotionControllerL);
-	/*const ConstructorHelpers::FObjectFinder<UStaticMesh>HandMeshL_Obj(TEXT(""));
+	//TODO: Add Handmesh
+	/*const ConstructorHelpers::FObjectFinder<UStaticMesh>HandMeshL_Obj(TEXT("")); 
 	if(HandMeshL_Obj.Succeeded())
 	{
 		HandMeshL->SetStaticMesh(HandMeshL_Obj.Object);
@@ -45,6 +48,7 @@ AVR_DefaultChar::AVR_DefaultChar()
 
 	HandMeshR = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HandMeshR"));
 	HandMeshR->SetupAttachment(CameraRoot);
+	//TODO: Add Handmesh
 	/*const ConstructorHelpers::FObjectFinder<UStaticMesh>HandMeshR_Obj(TEXT(""));
 	if(HandMeshR_Obj.Succeeded())
 	{
@@ -61,7 +65,7 @@ void AVR_DefaultChar::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//InputComponent->BindAction("Debug",EInputEvent::IE_Pressed,this,&AVR_DefaultChar::Test);
+	InputComponent->BindAction("Debug",EInputEvent::IE_Pressed,this,&AVR_DefaultChar::Test);
 }
 
 void AVR_DefaultChar::Test()
@@ -73,21 +77,22 @@ void AVR_DefaultChar::Test()
 
 	for (int i = 0; i < 32; ++i)
 	{
-		s[i] = FVector(i,i,i);
-		t[i] = FVector(i/2,i/2,i/2);
+		s.Add(FVector(i,i,i));
+		t.Add(FVector(i*(i/4),i*(i/4),i*(i/4)));
 	}
 	
-	uint32** Arr = MotionControllerR->DtwDistance(s,t);
-	for (int i = 0; i < 32; ++i)
+	uint32** Arr = MotionControllerR->DtwDistance(t,s);
+
+	FString Result = "";
+	for (int i = 0; i < s.Num(); ++i)
 	{
-		FString Result = "";
-		for (int j = 0; j < 32; ++j)
+		for (int j = 0; j < t.Num(); ++j)
 		{
-			Result.Append(FString::Printf(TEXT("%i,"),*static_cast<int>(Arr[i])));
+			Result.Append(FString::Printf(TEXT("%i,"),Arr[i][j]));
 			//UE_LOG(LogTemp,Display,TEXT(""));
 		}
-		UE_LOG(LogTemp,Display,TEXT("Text: %s"),*Result);
 	}
+	UE_LOG(LogTemp,Display,TEXT("%s"),*Result);
 }
 
 

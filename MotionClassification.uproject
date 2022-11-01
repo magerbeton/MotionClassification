@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "{944C6D0D-4AC8-8442-0B23-B3B565C66B19}",
+	"EngineAssociation": "{DB08BCB5-471C-17D7-34A6-ABAE5399ECC0}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -11,6 +11,17 @@
 			"AdditionalDependencies": [
 				"Engine",
 				"HeadMountedDisplay"
+			]
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "SteamVR",
+			"Enabled": false,
+			"SupportedTargetPlatforms": [
+				"Win32",
+				"Win64",
+				"Linux"
 			]
 		}
 	]
